@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Amazon India Pricing Calculator — IBI / iINTELLIGENCEi</title>
+<meta name="description" content="Amazon India product pricing calculator for sellers. Calculate selling price, MRP, profit, ROI. By India Business International.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1a1a18;
+    --text2: #5a5a54;
+    --text3: #9a9a90;
+    --accent: #e87722;
+    --accent-bg: #fff4ec;
+    --accent-text: #b85510;
+    --green: #1a7a4a;
+    --green-bg: #eaf5ee;
+    --blue: #1a5a9a;
+    --blue-bg: #eaf0fa;
+    --red: #b82020;
+    --red-bg: #faeaea;
+    --amber: #a06010;
+    --amber-bg: #faf3e0;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--text);
+    color: #fff;
+    padding: 16px 20px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500; color: #fff;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+  .header-brand { font-size: 16px; font-weight: 600; color: #fff; }
+  .header-brand span { color: var(--accent); }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+  .header-badge {
+    font-size: 11px; background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7); padding: 4px 10px;
+    border-radius: 20px; white-space: nowrap;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 860px; margin: 0 auto; padding: 20px 16px 40px; }
+  .notice {
+    background: var(--amber-bg); border: 1px solid rgba(160,96,16,0.2);
+    border-radius: var(--radius); padding: 10px 14px;
+    font-size: 12.5px; color: var(--amber); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .notice strong { font-weight: 600; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+
+  /* PANELS */
+  .panel {
+    background: var(--surface); border-radius: var(--radius-lg);
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    padding: 18px 18px 20px;
+  }
+  .panel-head {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text3);
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .panel-head span { color: var(--accent); }
+
+  /* FIELDS */
+  .field { margin-bottom: 13px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block; font-size: 12.5px; font-weight: 500;
+    color: var(--text2); margin-bottom: 5px;
+  }
+  .input-group { display: flex; align-items: stretch; }
+  .input-addon {
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 0 10px; font-size: 13px; color: var(--text3);
+    display: flex; align-items: center;
+    font-family: 'DM Mono', monospace;
+  }
+  .input-addon.left { border-right: none; border-radius: var(--radius) 0 0 var(--radius); }
+  .input-addon.right { border-left: none; border-radius: 0 var(--radius) var(--radius) 0; }
+  .field input {
+    flex: 1; height: 40px; font-size: 14px; font-family: 'DM Mono', monospace;
+    font-weight: 500; color: var(--text);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 0 10px; outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus { border-color: var(--accent); }
+  .field input.solo { border-radius: var(--radius); }
+  .field input.inner-left { border-radius: 0; border-left: none; border-right: none; }
+  .field input.inner-right { border-radius: 0; border-right: none; border-left: none; }
+  .field input.right-end { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+  .field input.left-end { border-radius: var(--radius) 0 0 var(--radius); border-right: none; }
+  .hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .section-divider {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text3);
+    margin: 16px 0 10px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* RESULTS METRICS */
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .metric {
+    border-radius: var(--radius); padding: 12px 13px;
+    background: var(--surface2); border: 1px solid var(--border);
+  }
+  .metric.acc { background: var(--accent-bg); border-color: rgba(232,119,34,0.2); }
+  .metric.grn { background: var(--green-bg); border-color: rgba(26,122,74,0.2); }
+  .metric.blu { background: var(--blue-bg); border-color: rgba(26,90,154,0.2); }
+  .metric-lbl { font-size: 11px; color: var(--text3); margin-bottom: 5px; font-weight: 500; }
+  .metric.acc .metric-lbl { color: var(--accent); }
+  .metric.grn .metric-lbl { color: var(--green); }
+  .metric.blu .metric-lbl { color: var(--blue); }
+  .metric-val {
+    font-size: 22px; font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    color: var(--text); white-space: nowrap;
+  }
+  .metric.acc .metric-val { color: var(--accent-text); }
+  .metric.grn .metric-val { color: var(--green); }
+  .metric.blu .metric-val { color: var(--blue); }
+  .metric-note { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+  /* BREAKDOWN TABLE */
+  .bk-section { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text3); margin: 14px 0 6px; }
+  .bk-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bk-row:last-child { border-bottom: none; }
+  .bk-label { color: var(--text2); }
+  .bk-val { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+  .bk-row.total .bk-label { font-weight: 600; color: var(--text); }
+  .bk-row.total .bk-val { font-weight: 700; }
+  .bk-row.profit .bk-val { color: var(--green); }
+  .bk-row.loss .bk-val { color: var(--red); }
+  .bk-row.highlight .bk-label { color: var(--accent-text); }
+  .bk-row.highlight .bk-val { color: var(--accent-text); }
+
+  /* VIABILITY */
+  .viability {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border-radius: var(--radius);
+    border: 1px solid var(--border); margin-top: 14px;
+    font-size: 13px; color: var(--text2);
+    background: var(--surface2);
+    transition: all 0.25s;
+  }
+  .viability.good { background: var(--green-bg); border-color: rgba(26,122,74,0.25); color: var(--green); }
+  .viability.warn { background: var(--amber-bg); border-color: rgba(160,96,16,0.25); color: var(--amber); }
+  .viability.bad { background: var(--red-bg); border-color: rgba(184,32,32,0.25); color: var(--red); }
+  .v-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
+  .viability.good .v-dot { background: var(--green); }
+  .viability.warn .v-dot { background: var(--amber); }
+  .viability.bad .v-dot { background: var(--red); }
+
+  /* RESET BUTTON */
+  .btn-reset {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text3); background: none;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 6px 14px; cursor: pointer; margin-top: 14px;
+    font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  }
+  .btn-reset:hover { background: var(--surface2); color: var(--text2); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; margin-top: 30px;
+    font-size: 12px; color: var(--text3);
+    padding: 0 16px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer strong { color: var(--text2); }
+
+  /* Mobile tweaks */
+  @media (max-width: 420px) {
+    .metric-val { font-size: 18px; }
+    .metrics-grid { gap: 8px; }
+    .panel { padding: 14px 14px 16px; }
+  }
+
+  /* Spinner/loading state for inputs */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark">iIi</div>
+    <div>
+      <div class="header-brand">India Business <span>International</span></div>
+      <div class="header-sub">iINTELLIGENCEi · eCommerce for the World</div>
+    </div>
+  </div>
+  <div class="header-badge">Amazon India · Seller Tool</div>
+</header>
+
+<div class="container">
+
+  <div class="notice">
+    <strong>⚡ Updated:</strong>&nbsp; Amazon India fee structure effective 16 March 2026. All calculations reflect new platform fees.
+  </div>
+
+  <div class="grid">
+
+    <!-- INPUT PANEL -->
+    <div class="panel">
+      <div class="panel-head">Inputs <span>·</span> Enter your costs</div>
+
+      <div class="field">
+        <label>Product / Manufacturing / Wholesale cost</label>
+        <div class="input-group">
+          <span class="input-addon left">₹</span>
+          <input class="right-end" type="number" id="cost" value="200" min="0" step="1" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>GST rate</label>
+        <div class="input-group">
+          <input class="left-end" type="number" id="gst" value="18" min="0" max="28" step="0.1" oninput="calc()">
+          <span class="input-addon right">%</span>
+        </div>
+        <div class="hint">Common: 0% · 5% · 12% · 18% · 28%</div>
+      </div>
+
+      <div class="field">
+        <label>Packaging cost</label>
+        <div class="input-group">
+          <span class="input-addon left">₹</span>
+          <input class="right-end" type="number" id="pack" value="20" min="0" step="1" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Shipping / logistics cost</label>
+        <div class="input-group">
+          <span class="input-addon left">₹</span>
+          <input class="right-end" type="number" id="ship" value="50" min="0" step="1" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Amazon platform fee (% of selling price)</label>
+        <div class="input-group">
+          <input class="left-end" type="number" id="afee" value="15" min="0" max="60" step="0.1" oninput="calc()">
+          <span class="input-addon right">%</span>
+        </div>
+        <div class="hint">Referral fee + closing fee + weight handling (combined %)</div>
+      </div>
+
+      <div class="field">
+        <label>Other charges (ads, storage, misc)</label>
+        <div class="input-group">
+          <span class="input-addon left">₹</span>
+          <input class="right-end" type="number" id="other" value="0" min="0" step="1" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="section-divider">Pricing parameters</div>
+
+      <div class="field">
+        <label>Target profit margin (% of total cost)</label>
+        <div class="input-group">
+          <input class="left-end" type="number" id="profit" value="25" min="1" max="500" step="0.5" oninput="calc()">
+          <span class="input-addon right">%</span>
+        </div>
+        <div class="hint">Default 25% — change as needed</div>
+      </div>
+
+      <div class="field">
+        <label>MRP multiplier (× selling price)</label>
+        <div class="input-group">
+          <input class="left-end" type="number" id="mrpmult" value="1.5" min="1.0" max="10.0" step="0.1" oninput="calc()">
+          <span class="input-addon right">×</span>
+        </div>
+        <div class="hint">Standard practice: 1.5× · Premium products: 2× – 3×</div>
+      </div>
+
+      <button class="btn-reset" onclick="resetDefaults()">↺ Reset to defaults</button>
+    </div>
+
+    <!-- RESULTS PANEL -->
+    <div class="panel">
+      <div class="panel-head">Results <span>·</span> Live calculations</div>
+
+      <div class="metrics-grid">
+        <div class="metric acc">
+          <div class="metric-lbl">Selling price (incl. GST)</div>
+          <div class="metric-val" id="v-sp">—</div>
+          <div class="metric-note" id="v-sp-ex">excl. GST: —</div>
+        </div>
+        <div class="metric blu">
+          <div class="metric-lbl">MRP (print on pack)</div>
+          <div class="metric-val" id="v-mrp">—</div>
+          <div class="metric-note" id="v-mrp-note">at 1.5× selling price</div>
+        </div>
+        <div class="metric grn">
+          <div class="metric-lbl">Net profit per unit</div>
+          <div class="metric-val" id="v-np">—</div>
+          <div class="metric-note" id="v-npm">gross margin: —</div>
+        </div>
+        <div class="metric">
+          <div class="metric-lbl">ROI / Markup</div>
+          <div class="metric-val" id="v-roi">—</div>
+          <div class="metric-note">return on cost</div>
+        </div>
+      </div>
+
+      <!-- COST BREAKDOWN -->
+      <div class="bk-section">Cost breakdown</div>
+      <div class="bk-row"><span class="bk-label">Product / manufacturing</span><span class="bk-val" id="b-cost">—</span></div>
+      <div class="bk-row"><span class="bk-label">Packaging</span><span class="bk-val" id="b-pack">—</span></div>
+      <div class="bk-row"><span class="bk-label">Shipping / logistics</span><span class="bk-val" id="b-ship">—</span></div>
+      <div class="bk-row"><span class="bk-label">Other charges</span><span class="bk-val" id="b-other">—</span></div>
+      <div class="bk-row"><span class="bk-label">Amazon platform fee</span><span class="bk-val" id="b-afee">—</span></div>
+      <div class="bk-row total"><span class="bk-label">Total expense</span><span class="bk-val" id="b-total">—</span></div>
+
+      <!-- REVENUE BREAKDOWN -->
+      <div class="bk-section">Revenue breakdown</div>
+      <div class="bk-row"><span class="bk-label">Selling price (excl. GST)</span><span class="bk-val" id="b-sp-ex">—</span></div>
+      <div class="bk-row"><span class="bk-label">GST collected (remitted to Govt)</span><span class="bk-val" id="b-gst">—</span></div>
+      <div class="bk-row"><span class="bk-label">Amazon fee deducted</span><span class="bk-val" id="b-af">—</span></div>
+      <div class="bk-row"><span class="bk-label">Net seller revenue</span><span class="bk-val" id="b-rev">—</span></div>
+      <div class="bk-row profit"><span class="bk-label">Net profit</span><span class="bk-val" id="b-np2">—</span></div>
+
+      <!-- KEY RATIOS -->
+      <div class="bk-section">Key ratios</div>
+      <div class="bk-row"><span class="bk-label">Break-even selling price</span><span class="bk-val" id="b-bep">—</span></div>
+      <div class="bk-row"><span class="bk-label">Gross margin on selling price</span><span class="bk-val" id="b-gm">—</span></div>
+      <div class="bk-row"><span class="bk-label">Markup / ROI on total cost</span><span class="bk-val" id="b-roi2">—</span></div>
+      <div class="bk-row highlight"><span class="bk-label">MRP printed on packaging</span><span class="bk-val" id="b-mrp2">—</span></div>
+
+      <!-- VIABILITY -->
+      <div class="viability" id="viability">
+        <div class="v-dot" id="v-dot"></div>
+        <div id="v-text">Enter your costs to see viability assessment.</div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <div class="footer">
+    <strong>India Business International (IBI)</strong> · iINTELLIGENCEi · eCommerce for the World<br>
+    Amazon India Pricing Calculator · Fee structure updated 16 March 2026<br>
+    Built for <strong>Dr. T. Sasimurugan</strong>, Founder &amp; CEO · Internal seller tool
+  </div>
+
+</div><!-- /container -->
+
+<script>
+function fmt(n) {
+  return '₹' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function fmtp(n) {
+  return n.toFixed(1) + '%';
+}
+
+function calc() {
+  const cost   = parseFloat(document.getElementById('cost').value)   || 0;
+  const gst    = parseFloat(document.getElementById('gst').value)    || 0;
+  const pack   = parseFloat(document.getElementById('pack').value)   || 0;
+  const ship   = parseFloat(document.getElementById('ship').value)   || 0;
+  const afee   = parseFloat(document.getElementById('afee').value)   || 0;
+  const other  = parseFloat(document.getElementById('other').value)  || 0;
+  const pr     = parseFloat(document.getElementById('profit').value) || 25;
+  const mult   = parseFloat(document.getElementById('mrpmult').value)|| 1.5;
+
+  document.getElementById('v-mrp-note').textContent = 'at ' + mult.toFixed(1) + '× selling price';
+
+  const baseCost  = cost + pack + ship + other;
+  if (baseCost <= 0) return;
+
+  const af_frac   = afee / 100;
+  const gst_frac  = gst  / 100;
+  const pr_frac   = pr   / 100;
+
+  // Core formula: SP_ex = baseCost × (1 + profit%) / (1 − amazon_fee%)
+  const sp_ex     = baseCost * (1 + pr_frac) / (1 - af_frac);
+  const sp_in     = sp_ex * (1 + gst_frac);
+  const mrp       = sp_in * mult;
+
+  const af_amt    = sp_ex * af_frac;
+  const gst_amt   = sp_ex * gst_frac;
+  const net_rev   = sp_ex - af_amt;
+  const net_profit= net_rev - baseCost;
+  const total_exp = baseCost + af_amt;
+  const roi       = (net_profit / baseCost) * 100;
+  const g_margin  = (net_profit / sp_ex) * 100;
+  const bep_ex    = baseCost / (1 - af_frac);
+  const bep_in    = bep_ex * (1 + gst_frac);
+
+  // Metrics
+  document.getElementById('v-sp').textContent    = fmt(sp_in);
+  document.getElementById('v-sp-ex').textContent = 'excl. GST: ' + fmt(sp_ex);
+  document.getElementById('v-mrp').textContent   = fmt(mrp);
+  document.getElementById('v-np').textContent    = fmt(net_profit);
+  document.getElementById('v-npm').textContent   = 'gross margin: ' + fmtp(g_margin);
+  document.getElementById('v-roi').textContent   = fmtp(roi);
+
+  // Cost breakdown
+  document.getElementById('b-cost').textContent  = fmt(cost);
+  document.getElementById('b-pack').textContent  = fmt(pack);
+  document.getElementById('b-ship').textContent  = fmt(ship);
+  document.getElementById('b-other').textContent = fmt(other);
+  document.getElementById('b-afee').textContent  = fmt(af_amt);
+  document.getElementById('b-total').textContent = fmt(total_exp);
+
+  // Revenue breakdown
+  document.getElementById('b-sp-ex').textContent = fmt(sp_ex);
+  document.getElementById('b-gst').textContent   = fmt(gst_amt);
+  document.getElementById('b-af').textContent    = fmt(af_amt);
+  document.getElementById('b-rev').textContent   = fmt(net_rev);
+  document.getElementById('b-np2').textContent   = fmt(net_profit);
+
+  // Ratios
+  document.getElementById('b-bep').textContent   = fmt(bep_in) + ' (incl. GST)';
+  document.getElementById('b-gm').textContent    = fmtp(g_margin);
+  document.getElementById('b-roi2').textContent  = fmtp(roi);
+  document.getElementById('b-mrp2').textContent  = fmt(mrp);
+
+  // Viability
+  const vb  = document.getElementById('viability');
+  const dot = document.getElementById('v-dot');
+  const vtx = document.getElementById('v-text');
+  vb.className = 'viability';
+  if (roi >= 30) {
+    vb.classList.add('good');
+    vtx.textContent = '✓ Excellent — ROI ' + fmtp(roi) + '. Strong profitability. Good to list on Amazon.';
+  } else if (roi >= 15) {
+    vb.classList.add('warn');
+    vtx.textContent = '~ Acceptable — ROI ' + fmtp(roi) + '. Consider reducing costs or raising margin target.';
+  } else {
+    vb.classList.add('bad');
+    vtx.textContent = '⚠ Caution — ROI ' + fmtp(roi) + '. Thin margins. Review costs before listing.';
+  }
+}
+
+function resetDefaults() {
+  document.getElementById('cost').value   = 200;
+  document.getElementById('gst').value    = 18;
+  document.getElementById('pack').value   = 20;
+  document.getElementById('ship').value   = 50;
+  document.getElementById('afee').value   = 15;
+  document.getElementById('other').value  = 0;
+  document.getElementById('profit').value = 25;
+  document.getElementById('mrpmult').value= 1.5;
+  calc();
+}
+
+calc();
+</script>
+</body>
+</html>
